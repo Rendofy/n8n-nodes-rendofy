@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.2 - Unreleased
+
+- Added a side-effect-free API-key credential test using Rendofy's dedicated credential-test endpoint.
+
 ## 0.2.1 - Unreleased
 
 - Align package repository metadata and release workflow configuration with current npm Trusted Publishing guidance.

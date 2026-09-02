@@ -1,4 +1,10 @@
-import type { IAuthenticateGeneric, ICredentialType, Icon, INodeProperties } from 'n8n-workflow';
+import type {
+	IAuthenticateGeneric,
+	ICredentialTestRequest,
+	ICredentialType,
+	Icon,
+	INodeProperties,
+} from 'n8n-workflow';
 
 export class RendofyApi implements ICredentialType {
 
@@ -31,6 +37,17 @@ export class RendofyApi implements ICredentialType {
 			body: {
 				api_key: '={{$credentials.apiKey}}',
 			},
+		},
+	};
+
+	/**
+	 * Validates the API key without submitting a render. The endpoint shares the
+	 * render-intake key lookup but has no job, callback, storage, or billing path.
+	 */
+	test: ICredentialTestRequest = {
+		request: {
+			method: 'POST',
+			url: 'https://api.rendofy.com/webhook/render-credential-test',
 		},
 	};
 }
