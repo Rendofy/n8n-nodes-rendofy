@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-rendofy",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "n8n community node for submitting asynchronous video render jobs to Rendofy.",
   "license": "MIT",
   "homepage": "https://rendofy.com/n8n-video-rendering",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Rendofy/n8n-nodes-rendofy.git"
+    "url": "git+https://github.com/Rendofy/n8n-nodes-rendofy.git"
   },
   "bugs": {
     "url": "https://github.com/Rendofy/n8n-nodes-rendofy/issues"
@@ -60,5 +60,8 @@
   },
   "peerDependencies": {
     "n8n-workflow": "*"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
