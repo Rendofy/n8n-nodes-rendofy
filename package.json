@@ -1,0 +1,64 @@
+{
+  "name": "n8n-nodes-rendofy",
+  "version": "0.2.0",
+  "description": "n8n community node for submitting asynchronous video render jobs to Rendofy.",
+  "license": "MIT",
+  "homepage": "https://rendofy.com/n8n-video-rendering",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "rendofy",
+    "video-rendering",
+    "webhook"
+  ],
+  "author": {
+    "name": "Rendofy",
+    "email": "hello@rendofy.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rendofy/n8n-nodes-rendofy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Rendofy/n8n-nodes-rendofy/issues"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "n8n-node build",
+    "build:watch": "tsc --watch",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "test": "npm run build && tsc --outDir .test-dist --incremental false && node --test test/*.test.js",
+    "scan:published": "npx @n8n/scan-community-package n8n-nodes-rendofy",
+    "release": "n8n-node release",
+    "prepublishOnly": "n8n-node prerelease"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": true,
+    "credentials": [
+      "dist/credentials/RendofyApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Rendofy/Rendofy.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "^0.44.5",
+    "eslint": "^9.39.4",
+    "prettier": "^3.8.3",
+    "release-it": "^20.2.0",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}
