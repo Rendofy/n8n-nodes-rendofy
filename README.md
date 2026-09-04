@@ -20,9 +20,9 @@ Create a **Rendofy API** credential and enter your API key. The key is stored by
 
 For API details, see the [Rendofy JSON-to-video API guide](https://rendofy.com/json-to-video-api).
 
-## Operations
+## Resource and operation
 
-### Submit a render job
+Choose **Resource: Render** and **Operation: Create** to queue an asynchronous video render job. Rendofy currently exposes no other public resources or operations through this node.
 
 The node accepts these fields:
 

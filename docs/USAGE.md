@@ -2,7 +2,7 @@
 
 ## Submit a render
 
-Add the **Rendofy** node after a node that prepares your video data. In **Payload**, provide a JSON object or an n8n expression that resolves to one.
+Add the **Rendofy** node after a node that prepares your video data. Select **Resource: Render** and **Operation: Create**. In **Payload**, provide a JSON object or an n8n expression that resolves to one.
 
 Use a callback URL controlled by your n8n workflow. The callback must be reachable by Rendofy when the job finishes.
 

@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const test = require('node:test');
 
 const { buildRenderRequest, parsePayload } = require('../.test-dist/nodes/Rendofy/transport.js');
+const { Rendofy } = require('../.test-dist/nodes/Rendofy/Rendofy.node.js');
 const { RendofyApi } = require('../.test-dist/credentials/RendofyApi.credentials.js');
 
 test('parses a JSON object payload', () => {
@@ -38,5 +39,45 @@ test('uses the side-effect-free credential validation endpoint', () => {
 				api_key: '={{$credentials.apiKey}}',
 			},
 		},
+	});
+});
+
+test('uses the standard Resource and Operation UI pattern', () => {
+	const node = new Rendofy();
+	const [resource, operation, callbackUrl, payload] = node.description.properties;
+
+	assert.equal(node.description.subtitle, '={{$parameter["operation"] + ": " + $parameter["resource"]}}');
+	assert.equal(node.description.usableAsTool, true);
+	assert.deepEqual(resource, {
+		displayName: 'Resource',
+		name: 'resource',
+		type: 'options',
+		noDataExpression: true,
+		options: [{ name: 'Render', value: 'render' }],
+		default: 'render',
+		required: true,
+	});
+	assert.deepEqual(operation, {
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: { show: { resource: ['render'] } },
+		options: [
+			{
+				name: 'Create',
+				value: 'create',
+				description: 'Queue an asynchronous video render job',
+				action: 'Create a render',
+			},
+		],
+		default: 'create',
+		required: true,
+	});
+	assert.deepEqual(callbackUrl.displayOptions, {
+		show: { resource: ['render'], operation: ['create'] },
+	});
+	assert.deepEqual(payload.displayOptions, {
+		show: { resource: ['render'], operation: ['create'] },
 	});
 });

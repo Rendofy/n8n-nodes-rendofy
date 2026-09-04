@@ -19,8 +19,8 @@ export class Rendofy implements INodeType {
 		} as Icon,
 		group: ['transform'],
 		version: 1,
-		subtitle: 'Submit a render job',
-		description: 'Submit an asynchronous video render job to Rendofy',
+		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
+		description: 'Create asynchronous video render jobs with Rendofy',
 		defaults: {
 			name: 'Rendofy',
 		},
@@ -36,13 +36,54 @@ export class Rendofy implements INodeType {
 		],
 		properties: [
 			{
+				displayName: 'Resource',
+				name: 'resource',
+				type: 'options',
+				noDataExpression: true,
+				options: [
+					{
+						name: 'Render',
+						value: 'render',
+					},
+				],
+				default: 'render',
+				required: true,
+			},
+			{
+				displayName: 'Operation',
+				name: 'operation',
+				type: 'options',
+				noDataExpression: true,
+				displayOptions: {
+					show: {
+						resource: ['render'],
+					},
+				},
+				options: [
+					{
+						name: 'Create',
+						value: 'create',
+						description: 'Queue an asynchronous video render job',
+						action: 'Create a render',
+					},
+				],
+				default: 'create',
+				required: true,
+			},
+			{
 				displayName: 'Callback URL',
 				name: 'callbackUrl',
 				type: 'string',
 				default: '',
 				required: true,
 				placeholder: 'e.g. https://example.com/webhook/rendofy-callback',
-				description: 'Where Rendofy sends the completed render or failure callback',
+				description: 'Public HTTPS URL where Rendofy sends the completed render or failure callback',
+				displayOptions: {
+					show: {
+						resource: ['render'],
+						operation: ['create'],
+					},
+				},
 			},
 			{
 				displayName: 'Payload',
@@ -50,7 +91,13 @@ export class Rendofy implements INodeType {
 				type: 'json',
 				default: '{\n  "quote": "Ship it.",\n  "author": "You"\n}',
 				required: true,
-				description: 'JSON data Rendofy uses to render the video',
+				description: 'JSON object that describes the video to render',
+				displayOptions: {
+					show: {
+						resource: ['render'],
+						operation: ['create'],
+					},
+				},
 			},
 		],
 	};
@@ -60,6 +107,15 @@ export class Rendofy implements INodeType {
 		const returnData: INodeExecutionData[] = [];
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 			try {
+				const resource = this.getNodeParameter('resource', itemIndex) as string;
+				const operation = this.getNodeParameter('operation', itemIndex) as string;
+
+				if (resource !== 'render' || operation !== 'create') {
+					throw new NodeOperationError(this.getNode(), 'Unsupported Rendofy resource or operation', {
+						itemIndex,
+					});
+				}
+
 				const callbackUrl = this.getNodeParameter('callbackUrl', itemIndex) as string;
 				const payloadValue = this.getNodeParameter('payload', itemIndex);
 				const payload = parsePayload(payloadValue);
